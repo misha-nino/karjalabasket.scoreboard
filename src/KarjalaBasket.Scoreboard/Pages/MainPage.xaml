@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:KarjalaBasket.Scoreboard.ViewModels"
+             xmlns:v="clr-namespace:KarjalaBasket.Scoreboard.Views"
+             x:Class="KarjalaBasket.Scoreboard.Pages.MainPage"
+             x:DataType="vm:MainViewModel"
+             Padding="10">
+    
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+    
+    <Grid RowSpacing="10" ColumnSpacing="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <Entry Grid.Row="0" Grid.Column="0" 
+               Placeholder="Команда слева" 
+               FontSize="30" 
+               HorizontalTextAlignment="Center" 
+               HorizontalOptions="Fill"
+               Text="{Binding TeamA.Name, Mode=TwoWay}" />
+        
+        <Entry Grid.Row="0" Grid.Column="2" 
+               Placeholder="Команда справа" 
+               FontSize="30" 
+               HorizontalTextAlignment="Center" 
+               HorizontalOptions="Fill"
+               Text="{Binding TeamB.Name, Mode=TwoWay}" />
+        
+        <v:PlayersView Grid.Row="1" Grid.Column="0" 
+                       Players="{Binding TeamA.Players, Mode=TwoWay}"
+                       AddPlayerCommand="{Binding TeamA.AddPlayerCommand}"
+                       GameSettings="{Binding GameSettings}"/>
+        
+        <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" RowSpacing="30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!--Счет-->
+                <RowDefinition Height="Auto"/> <!--Фолы Период-->
+                <RowDefinition Height="Auto"/> <!--Период Таймауты-->
+                <RowDefinition Height="Auto"/> <!--Основное время-->
+                <RowDefinition Height="Auto"/> <!--Время владения-->
+                <RowDefinition Height="Auto"/> <!--Старт/стоп--> 
+            </Grid.RowDefinitions>
+            
+            <Entry Grid.Row="0" Grid.Column="0" FontSize="50" 
+                   ToolTipProperties.Text="Очки команды слева"
+                   VerticalTextAlignment="Center" 
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="Center"
+                   MinimumWidthRequest="110"
+                   Text="{Binding TeamA.Points, Mode=TwoWay}" />
+            
+            <Entry Grid.Row="0" Grid.Column="2" 
+                   ToolTipProperties.Text="Очки команды справа"
+                   FontSize="50" 
+                   VerticalTextAlignment="Center" 
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="Center"
+                   MinimumWidthRequest="110"
+                   Text="{Binding TeamB.Points, Mode=TwoWay}"/>
+            
+            <v:StepperView Grid.Row="1" Grid.Column="0" 
+                           HorizontalOptions="Fill"
+                           FontSize="30"
+                           Max="{Binding GameSettings.MaxTeamFouls}"
+                           Label="Фолы"
+                           Value="{Binding TeamA.Fouls, Mode=TwoWay}"/>
+            
+            <v:StepperView Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" 
+                           HorizontalOptions="Fill"
+                           FontSize="30"
+                           Label="Период"
+                           Min="1"
+                           Value="{Binding Period, Mode=TwoWay}"/>
+            
+            <v:StepperView Grid.Row="1" Grid.Column="2"
+                           HorizontalOptions="Fill"
+                           FontSize="30"
+                           Max="{Binding GameSettings.MaxTeamFouls}"
+                           Label="Фолы"
+                           Value="{Binding TeamB.Fouls, Mode=TwoWay}"/>
+            
+            <v:StepperView Grid.Row="2" Grid.Column="0"
+                           HorizontalOptions="Fill"
+                           FontSize="30"
+                           Max="{Binding GameSettings.Timeouts}"
+                           Label="Таймауты"
+                           Value="{Binding TeamA.Timeouts, Mode=TwoWay}"/>
+            
+            <v:StepperView Grid.Row="2" Grid.Column="2"
+                           HorizontalOptions="Fill"
+                           FontSize="30"
+                           Max="{Binding GameSettings.Timeouts}"
+                           Label="Таймауты"
+                           Value="{Binding TeamB.Timeouts, Mode=TwoWay}"/>
+            
+            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" ColumnSpacing="5" RowSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" 
+                       HorizontalOptions="Center" 
+                       Text="Время периода" 
+                       FontSize="16"/>
+                
+                <v:StepperView Grid.Row="1" Grid.Column="1"
+                               FontSize="30"
+                               Label="м"
+                               ToolTip="Минуты"
+                               Value="{Binding PeriodMinutes, Mode=TwoWay}"
+                               Max="{Binding GameSettings.PeriodTime.Minutes}"
+                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+                
+                <v:StepperView Grid.Row="1" Grid.Column="2"
+                               FontSize="30"
+                               Label="с"
+                               ToolTip="Секунды"
+                               Value="{Binding PeriodSeconds, Mode=TwoWay}"
+                               Max="59"
+                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+                
+                <v:StepperView Grid.Row="1" Grid.Column="3"
+                               FontSize="30"
+                               Label="мс"
+                               ToolTip="Миллисекунды"
+                               Value="{Binding PeriodMilliseconds, Mode=TwoWay}"
+                               Increment="100" Max="900"
+                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+            </Grid>
+            
+            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" ColumnSpacing="5" RowSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" 
+                       HorizontalOptions="Center" 
+                       Text="Время владения" 
+                       FontSize="16"/>
+
+                <v:StepperView Grid.Row="1" Grid.Column="2"
+                               FontSize="30"
+                               Label="с"
+                               ToolTip="Секунды"
+                               Max="{Binding GameSettings.PossessionTime.Seconds}"
+                               Value="{Binding PossessionSeconds, Mode=TwoWay}"
+                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+                
+                <v:StepperView Grid.Row="1" Grid.Column="3"
+                               FontSize="30"
+                               Label="мс"
+                               ToolTip="Миллисекунды"
+                               Increment="100" Max="900"
+                               Value="{Binding PossessionMilliseconds, Mode=TwoWay}"
+                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+            </Grid>
+            
+            <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <ImageButton Grid.Column="1" 
+                             ToolTipProperties.Text="Старт/Стоп"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Command="{Binding PlayCommand}"
+                             Source="{Binding PlayImageButtonSource}"
+                             WidthRequest="73"
+                             HeightRequest="73"
+                             Aspect="AspectFit"/>
+                
+                <Button Grid.Column="2" 
+                        ToolTipProperties.Text="{Binding GameSettings.PossessionTime.Seconds, StringFormat='{0}с на владение'}"
+                        FontSize="30"
+                        TextColor="White" 
+                        BackgroundColor="{StaticResource Gray950}"
+                        Text="{Binding GameSettings.PossessionTime.Seconds}"
+                        WidthRequest="75"
+                        HeightRequest="75"
+                        Command="{Binding UpdatePossessionTimeCommand}"
+                        CommandParameter="{Binding GameSettings.PossessionTime.Seconds}"/>
+                
+                <Button Grid.Column="3"
+                        ToolTipProperties.Text="{Binding GameSettings.SecondPossessionTime.Seconds, StringFormat='{0}с на владение'}"
+                        FontSize="30"
+                        TextColor="White"
+                        BackgroundColor="{StaticResource Gray950}"
+                        Text="{Binding GameSettings.SecondPossessionTime.Seconds}"
+                        WidthRequest="75"
+                        HeightRequest="75"
+                        Command="{Binding UpdatePossessionTimeCommand}"
+                        CommandParameter="{Binding GameSettings.SecondPossessionTime.Seconds}"/>
+            </Grid>
+        </Grid>
+        
+        <v:PlayersView Grid.Row="1" Grid.Column="2" 
+                       Players="{Binding TeamB.Players, Mode=TwoWay}"
+                       AddPlayerCommand="{Binding TeamB.AddPlayerCommand}"
+                       GameSettings="{Binding GameSettings}"/>
+    </Grid>
+    
+</ContentPage>
