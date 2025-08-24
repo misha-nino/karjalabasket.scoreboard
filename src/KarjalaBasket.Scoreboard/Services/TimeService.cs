@@ -11,7 +11,7 @@ public class TimeService
     
     public void ChangePossessionTime(GameModel game, int? seconds, int? milliseconds = default)
     {
-        game.PossessionTime = seconds.HasValue 
+        game.PossessionTime = seconds.HasValue && seconds.Value < game.PeriodTime.TotalSeconds
             ? new TimeSpan(0, 0, 0, seconds.Value, milliseconds ?? 0)
             : null;
     }
