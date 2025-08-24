@@ -116,43 +116,47 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" 
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" 
                        HorizontalOptions="Center" 
                        Text="Время периода" 
                        FontSize="16"/>
                 
-                <v:StepperView Grid.Row="1" Grid.Column="1"
-                               FontSize="30"
-                               Label="м"
-                               ToolTip="Минуты"
-                               Value="{Binding PeriodMinutes, Mode=TwoWay}"
-                               Max="{Binding GameSettings.PeriodTime.Minutes}"
-                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+                <v:TimeEntryView Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2"
+                                 FontSize="30"
+                                 Label="м"
+                                 ToolTip="Минуты"
+                                 Value="{Binding PeriodMinutes, Mode=TwoWay}"
+                                 IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
                 
-                <v:StepperView Grid.Row="1" Grid.Column="2"
-                               FontSize="30"
-                               Label="с"
-                               ToolTip="Секунды"
-                               Value="{Binding PeriodSeconds, Mode=TwoWay}"
-                               Max="59"
-                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+                <v:TimeEntryView Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2"
+                                 FontSize="30"
+                                 Label="с"
+                                 ToolTip="Секунды"
+                                 Value="{Binding PeriodSeconds, Mode=TwoWay}"
+                                 IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
                 
-                <v:StepperView Grid.Row="1" Grid.Column="3"
-                               FontSize="30"
-                               Label="мс"
-                               ToolTip="Миллисекунды"
-                               Value="{Binding PeriodMilliseconds, Mode=TwoWay}"
-                               Increment="100" Max="900"
-                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+                <v:TimeEntryView Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="2"
+                                 FontSize="30"
+                                 Label="мс"
+                                 ToolTip="Миллисекунды"
+                                 Value="{Binding PeriodMilliseconds, Mode=TwoWay}"
+                                 IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
             </Grid>
             
-            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" ColumnSpacing="5" RowSpacing="10">
+            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" RowSpacing="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -160,32 +164,66 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" 
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" 
                        HorizontalOptions="Center" 
                        Text="Время владения" 
                        FontSize="16"/>
 
-                <v:StepperView Grid.Row="1" Grid.Column="2"
-                               FontSize="30"
-                               Label="с"
-                               ToolTip="Секунды"
-                               Max="{Binding GameSettings.PossessionTime.Seconds}"
-                               Value="{Binding PossessionSeconds, Mode=TwoWay}"
-                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+                <v:TimeEntryView Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2"
+                                 FontSize="30"
+                                 Label="с"
+                                 ToolTip="Секунды"
+                                 Value="{Binding PossessionSeconds, Mode=TwoWay}"
+                                 IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
                 
-                <v:StepperView Grid.Row="1" Grid.Column="3"
-                               FontSize="30"
-                               Label="мс"
-                               ToolTip="Миллисекунды"
-                               Increment="100" Max="900"
-                               Value="{Binding PossessionMilliseconds, Mode=TwoWay}"
-                               IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+                <v:TimeEntryView Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="2"
+                                 FontSize="30"
+                                 Label="мс"
+                                 ToolTip="Миллисекунды"
+                                 Value="{Binding PossessionMilliseconds, Mode=TwoWay}"
+                                 IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
+                
+                <Button Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2"
+                        ToolTipProperties.Text="{Binding GameSettings.PossessionTime.Seconds, StringFormat='{0}с на владение'}"
+                        FontSize="20"
+                        TextColor="White" 
+                        BackgroundColor="{StaticResource Gray950}"
+                        MaximumWidthRequest="50"
+                        Text="{Binding GameSettings.PossessionTime.Seconds}"
+                        Command="{Binding UpdatePossessionTimeCommand}"
+                        CommandParameter="{Binding GameSettings.PossessionTime.Seconds}"/>
+                
+                <Button Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="2"
+                        ToolTipProperties.Text="{Binding GameSettings.SecondPossessionTime.Seconds, StringFormat='{0}с на владение'}"
+                        FontSize="20"
+                        TextColor="White"
+                        BackgroundColor="{StaticResource Gray950}"
+                        MaximumWidthRequest="50"
+                        Text="{Binding GameSettings.SecondPossessionTime.Seconds}"
+                        Command="{Binding UpdatePossessionTimeCommand}"
+                        CommandParameter="{Binding GameSettings.SecondPossessionTime.Seconds}"/>
+                
+                <ImageButton Grid.Row="2" Grid.Column="7" Grid.ColumnSpan="2"
+                             ToolTipProperties.Text="Сбросить счетчик владения"
+                             Source="ban_white.png"
+                             Aspect="Center"
+                             BackgroundColor="{StaticResource Gray950}"
+                             MaximumWidthRequest="50"
+                             Command="{Binding UpdatePossessionTimeCommand}"
+                             CommandParameter="{x:Null}"/>
             </Grid>
             
             <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
@@ -200,7 +238,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
-                <ImageButton Grid.Column="1" 
+                <ImageButton Grid.Column="2" 
                              ToolTipProperties.Text="Старт/Стоп"
                              HorizontalOptions="Center"
                              VerticalOptions="Center"
@@ -209,28 +247,6 @@
                              WidthRequest="73"
                              HeightRequest="73"
                              Aspect="AspectFit"/>
-                
-                <Button Grid.Column="2" 
-                        ToolTipProperties.Text="{Binding GameSettings.PossessionTime.Seconds, StringFormat='{0}с на владение'}"
-                        FontSize="30"
-                        TextColor="White" 
-                        BackgroundColor="{StaticResource Gray950}"
-                        Text="{Binding GameSettings.PossessionTime.Seconds}"
-                        WidthRequest="75"
-                        HeightRequest="75"
-                        Command="{Binding UpdatePossessionTimeCommand}"
-                        CommandParameter="{Binding GameSettings.PossessionTime.Seconds}"/>
-                
-                <Button Grid.Column="3"
-                        ToolTipProperties.Text="{Binding GameSettings.SecondPossessionTime.Seconds, StringFormat='{0}с на владение'}"
-                        FontSize="30"
-                        TextColor="White"
-                        BackgroundColor="{StaticResource Gray950}"
-                        Text="{Binding GameSettings.SecondPossessionTime.Seconds}"
-                        WidthRequest="75"
-                        HeightRequest="75"
-                        Command="{Binding UpdatePossessionTimeCommand}"
-                        CommandParameter="{Binding GameSettings.SecondPossessionTime.Seconds}"/>
             </Grid>
         </Grid>
         

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KarjalaBasket.Scoreboard.Views.TimeEntryView"
+             x:Name="ContentView">
+    
+    <FlexLayout ToolTipProperties.Text="{Binding ToolTip, Source={x:Reference ContentView}}"
+                Direction="Column"
+                AlignItems="Center" 
+                JustifyContent="Center">
+        
+        <Entry IsEnabled="{Binding IsEnabled, Mode=TwoWay, Source={x:Reference ContentView}}"
+               Text="{Binding Value, Mode=TwoWay, Source={x:Reference ContentView}}"
+               FontSize="{Binding FontSize, Source={x:Reference ContentView}}"
+               VerticalTextAlignment="Center" 
+               HorizontalTextAlignment="Center" 
+               HorizontalOptions="Fill" />
+        
+        <Label Text="{Binding Label, Mode=TwoWay, Source={x:Reference ContentView}}" 
+               Margin="0, 2, 0, 0"/>
+    </FlexLayout>
+</ContentView>

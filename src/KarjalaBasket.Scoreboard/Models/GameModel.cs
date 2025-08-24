@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using KarjalaBasket.Scoreboard.Helpers;
 using KarjalaBasket.Scoreboard.Settings;
@@ -9,7 +8,7 @@ namespace KarjalaBasket.Scoreboard.Models;
 public class GameModel : INotifyPropertyChanged
 {
     private TimeSpan _periodTime;
-    private TimeSpan _possessionTime;
+    private TimeSpan? _possessionTime;
     private TeamModel _teamA;
     private TeamModel _teamB;
     private byte _period;
@@ -51,7 +50,7 @@ public class GameModel : INotifyPropertyChanged
         }
     }
 
-    public TimeSpan PossessionTime
+    public TimeSpan? PossessionTime
     {
         get => _possessionTime;
         set

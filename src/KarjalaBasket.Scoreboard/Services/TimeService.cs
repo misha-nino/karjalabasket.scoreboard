@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using KarjalaBasket.Scoreboard.Models;
 
 namespace KarjalaBasket.Scoreboard.Services;
@@ -10,9 +9,11 @@ public class TimeService
         game.PeriodTime = new TimeSpan(0, 0, minutes, seconds, milliseconds);
     }
     
-    public void ChangePossessionTime(GameModel game, int seconds, int milliseconds = default)
+    public void ChangePossessionTime(GameModel game, int? seconds, int? milliseconds = default)
     {
-        game.PossessionTime = new TimeSpan(0, 0, 0, seconds, milliseconds);
+        game.PossessionTime = seconds.HasValue 
+            ? new TimeSpan(0, 0, 0, seconds.Value, milliseconds ?? 0)
+            : null;
     }
     
     public void HandleTickForPeriodTime(GameModel game)
@@ -34,6 +35,11 @@ public class TimeService
 
     public void HandleTickForPossessionTime(GameModel game)
     {
+        if (!game.PossessionTime.HasValue)
+        {
+            return;
+        }
+        
         if (game.PossessionTime == TimeSpan.Zero)
         {
             return;

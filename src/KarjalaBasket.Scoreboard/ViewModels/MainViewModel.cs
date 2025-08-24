@@ -46,16 +46,16 @@ public class MainViewModel : INotifyPropertyChanged
         set => _timeService.ChangePeriodTime(_game, _game.PeriodTime.Minutes, _game.PeriodTime.Seconds, value);
     }
 
-    public int PossessionSeconds
+    public int? PossessionSeconds
     {
-        get => _game.PossessionTime.Seconds;
-        set => _timeService.ChangePossessionTime(_game, value, _game.PossessionTime.Milliseconds);
+        get => _game.PossessionTime?.Seconds;
+        set => _timeService.ChangePossessionTime(_game, value, _game.PossessionTime?.Milliseconds);
     }
 
-    public int PossessionMilliseconds
+    public int? PossessionMilliseconds
     {
-        get => _game.PossessionTime.Milliseconds;
-        set => _timeService.ChangePossessionTime(_game, _game.PossessionTime.Seconds, value);
+        get => _game.PossessionTime?.Milliseconds;
+        set => _timeService.ChangePossessionTime(_game, _game.PossessionTime?.Seconds, value);
     }
 
     public string PlayImageButtonSource => _timer.IsRunning ? "pause.png" : "play.png";
@@ -64,7 +64,7 @@ public class MainViewModel : INotifyPropertyChanged
     
     public Command PlayCommand { get; set; }
 
-    public Command<int> UpdatePossessionTimeCommand { get; set; }
+    public Command<int?> UpdatePossessionTimeCommand { get; set; }
     
     public MainViewModel()
     {
@@ -86,7 +86,7 @@ public class MainViewModel : INotifyPropertyChanged
 
         PlayCommand = new Command(OnPlay);
         
-        UpdatePossessionTimeCommand = new Command<int>(s => _timeService.ChangePossessionTime(_game, s));
+        UpdatePossessionTimeCommand = new Command<int?>(s => _timeService.ChangePossessionTime(_game, s));
         
         _gameService.NextPeriod(_game);
     }
