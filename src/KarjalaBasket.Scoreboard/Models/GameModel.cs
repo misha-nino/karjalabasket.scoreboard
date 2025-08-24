@@ -40,11 +40,6 @@ public class GameModel : INotifyPropertyChanged
         set
         {
             _periodTime = value;
-
-            if (_periodTime == TimeSpan.Zero)
-            {
-                OnPeriodTimeIsUp();
-            }
             
             OnPropertyChanged();
         }
@@ -92,8 +87,6 @@ public class GameModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public event EventHandler? PeriodTimeIsUp;
-
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -105,10 +98,5 @@ public class GameModel : INotifyPropertyChanged
         field = value;
         OnPropertyChanged(propertyName);
         return true;
-    }
-
-    private void OnPeriodTimeIsUp()
-    {
-        PeriodTimeIsUp?.Invoke(this, EventArgs.Empty);
     }
 }

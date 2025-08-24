@@ -66,6 +66,8 @@ public class MainViewModel : INotifyPropertyChanged
 
     public Command<int?> UpdatePossessionTimeCommand { get; set; }
     
+    public Command GoToNextPeriodCommand { get; set; }
+    
     public MainViewModel()
     {
         _gameService = new GameService();
@@ -73,20 +75,23 @@ public class MainViewModel : INotifyPropertyChanged
         _timer = Application.Current!.Dispatcher.CreateTimer();
         
         _game = _gameService.CreateGame(GameKinds.FibaStandart);
-
-        _game.PropertyChanged += OnGameChanged;
-        _game.PeriodTimeIsUp += OnPeriodTimeIsUp;
-        
-        _timer.Interval = _game.Settings.TimerTick;
-        _timer.Tick += (_, _) => _timeService.HandleTickForPeriodTime(_game);
-        _timer.Tick += (_, _) => _timeService.HandleTickForPossessionTime(_game);
         
         TeamA = new TeamViewModel(_game.TeamA);
         TeamB = new TeamViewModel(_game.TeamB);
 
-        PlayCommand = new Command(OnPlay);
+        PlayCommand = new Command(() => StartStopTimer());
         
         UpdatePossessionTimeCommand = new Command<int?>(s => _timeService.ChangePossessionTime(_game, s));
+
+        GoToNextPeriodCommand = new Command(() => _gameService.NextPeriod(_game));
+
+        _game.PropertyChanged += OnGameChanged;
+        
+        _timeService.PeriodTimeIsUp += (_, _) => StartStopTimer(false);
+        
+        _timer.Interval = _game.Settings.TimerTick;
+        _timer.Tick += (_, _) => _timeService.HandleTickForPeriodTime(_game);
+        _timer.Tick += (_, _) => _timeService.HandleTickForPossessionTime(_game);
         
         _gameService.NextPeriod(_game);
     }
@@ -110,8 +115,6 @@ public class MainViewModel : INotifyPropertyChanged
         return true;
 
     }
-
-    private void OnPlay() => StartStopTimer();
 
     private void StartStopTimer(bool? start = null)
     {
@@ -145,10 +148,5 @@ public class MainViewModel : INotifyPropertyChanged
                 OnPropertyChanged(nameof(Period));
                 break;
         }
-    }
-
-    private void OnPeriodTimeIsUp(object? sender, EventArgs args)
-    {
-        StartStopTimer(false);
     }
 }

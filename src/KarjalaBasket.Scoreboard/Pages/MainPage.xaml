@@ -55,6 +55,7 @@
                 <RowDefinition Height="Auto"/> <!--Основное время-->
                 <RowDefinition Height="Auto"/> <!--Время владения-->
                 <RowDefinition Height="Auto"/> <!--Старт/стоп--> 
+                <RowDefinition Height="Auto"/> <!--Доп функции--> 
             </Grid.RowDefinitions>
             
             <Entry Grid.Row="0" Grid.Column="0" FontSize="50" 
@@ -238,14 +239,37 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
-                <ImageButton Grid.Column="2" 
+                <ImageButton Grid.Column="2"
                              ToolTipProperties.Text="Старт/Стоп"
                              HorizontalOptions="Center"
                              VerticalOptions="Center"
                              Command="{Binding PlayCommand}"
                              Source="{Binding PlayImageButtonSource}"
-                             WidthRequest="73"
-                             HeightRequest="73"
+                             WidthRequest="60"
+                             HeightRequest="60"
+                             Aspect="AspectFit"/>
+            </Grid>
+            
+            <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <ImageButton Grid.Column="4" 
+                             ToolTipProperties.Text="Перейти в следующий период"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Command="{Binding GoToNextPeriodCommand}"
+                             Source="next.png"
+                             WidthRequest="30"
+                             HeightRequest="30"
                              Aspect="AspectFit"/>
             </Grid>
         </Grid>

@@ -29,7 +29,7 @@ internal class GameService
     private static void NextExtraPeriod(GameModel game)
     {
         game.PeriodTime = game.Settings.ExtraPeriodTime;
-        game.TeamA.Timeouts = game.Settings.ExtraPeriodTimeouts;
+        game.TeamA.Timeouts = game.TeamB.Timeouts = game.Settings.ExtraPeriodTimeouts;
         game.PossessionTime = game.Settings.PossessionTime;
     }
 }

@@ -4,9 +4,16 @@ namespace KarjalaBasket.Scoreboard.Services;
 
 public class TimeService
 {
+    public event EventHandler? PeriodTimeIsUp;
+    
     public void ChangePeriodTime(GameModel game, int minutes, int seconds = default, int milliseconds = default)
     {
         game.PeriodTime = new TimeSpan(0, 0, minutes, seconds, milliseconds);
+
+        if (game.PeriodTime < game.PossessionTime)
+        {
+            game.PossessionTime = null;
+        }
     }
     
     public void ChangePossessionTime(GameModel game, int? seconds, int? milliseconds = default)
@@ -31,6 +38,8 @@ public class TimeService
         }
 
         game.PeriodTime = TimeSpan.Zero;
+
+        OnPeriodTimeIsUp();
     }
 
     public void HandleTickForPossessionTime(GameModel game)
@@ -53,5 +62,10 @@ public class TimeService
         }
 
         game.PossessionTime = TimeSpan.Zero;
+    }
+
+    private void OnPeriodTimeIsUp()
+    {
+        PeriodTimeIsUp?.Invoke(this, EventArgs.Empty);
     }
 }
