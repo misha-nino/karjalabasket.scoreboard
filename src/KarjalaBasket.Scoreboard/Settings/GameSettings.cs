@@ -2,11 +2,11 @@ namespace KarjalaBasket.Scoreboard.Settings;
 
 public class GameSettings
 {
-    public required string PeriodDisplayFormat { get; set; }
+    public required string ExtraPeriodDisplayFormat { get; set; }
     
-    public byte Periods { get; set; }
+    public byte FirstHalfTimeouts { get; set; }
     
-    public byte Timeouts { get; set; }
+    public byte SecondHalfTimeouts { get; set; }
     
     public byte ExtraPeriodTimeouts { get; set; }
     

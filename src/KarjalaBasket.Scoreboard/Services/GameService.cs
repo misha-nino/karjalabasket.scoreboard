@@ -1,3 +1,4 @@
+using KarjalaBasket.Scoreboard.Constants;
 using KarjalaBasket.Scoreboard.Models;
 using KarjalaBasket.Scoreboard.Settings;
 
@@ -19,8 +20,19 @@ internal class GameService
         }
         
         game.PeriodTime = game.Settings.PeriodTime;
+        
         game.TeamA.Fouls = game.TeamB.Fouls = 0;
-        game.TeamA.Timeouts = game.TeamB.Timeouts = game.Settings.Timeouts;
+
+        if (game.Period == BasketballNames.Period.StartOfFirstHalf)
+        {
+            game.TeamA.Timeouts = game.TeamB.Timeouts = game.Settings.FirstHalfTimeouts;
+        }
+
+        if (game.Period == BasketballNames.Period.StartOfSecondHalf)
+        {
+            game.TeamA.Timeouts = game.TeamB.Timeouts = game.Settings.SecondHalfTimeouts;
+        }
+        
         game.PossessionTime = game.Settings.PossessionTime;
     }
 

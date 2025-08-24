@@ -99,14 +99,14 @@
             <v:StepperView Grid.Row="2" Grid.Column="0"
                            HorizontalOptions="Fill"
                            FontSize="30"
-                           Max="{Binding GameSettings.Timeouts}"
+                           Max="{Binding GameSettings.SecondHalfTimeouts}"
                            Label="Таймауты"
                            Value="{Binding TeamA.Timeouts, Mode=TwoWay}"/>
             
             <v:StepperView Grid.Row="2" Grid.Column="2"
                            HorizontalOptions="Fill"
                            FontSize="30"
-                           Max="{Binding GameSettings.Timeouts}"
+                           Max="{Binding GameSettings.SecondHalfTimeouts}"
                            Label="Таймауты"
                            Value="{Binding TeamB.Timeouts, Mode=TwoWay}"/>
             

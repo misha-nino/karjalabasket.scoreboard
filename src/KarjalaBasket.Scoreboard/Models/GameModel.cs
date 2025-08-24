@@ -28,11 +28,9 @@ public class GameModel : INotifyPropertyChanged
         }
     }
 
-    public bool IsExtraPeriod => 
-        PeriodHelper.IsExtraPeriod(Period, Settings.Periods);
+    public bool IsExtraPeriod => PeriodHelper.IsExtraPeriod(Period);
 
-    public string PeriodDisplay => 
-        PeriodHelper.PeriodToString(Period, Settings.Periods, Settings.PeriodDisplayFormat);
+    public string PeriodDisplay => PeriodHelper.PeriodToString(Period, Settings.ExtraPeriodDisplayFormat);
 
     public TimeSpan PeriodTime
     {
