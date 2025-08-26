@@ -12,7 +12,7 @@ public class GameModel : INotifyPropertyChanged
     private TeamModel _teamA;
     private TeamModel _teamB;
     private byte _period;
-    
+
     public GameSettings Settings { get; }
     
     public byte Period
@@ -83,7 +83,7 @@ public class GameModel : INotifyPropertyChanged
         TeamB = new TeamModel(settings);
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;   
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {

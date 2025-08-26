@@ -10,4 +10,8 @@
       <ProjectReference Include="..\KarjalaBasket.Scoreboard.Services.Abstractions\KarjalaBasket.Scoreboard.Services.Abstractions.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
+    </ItemGroup>
+
 </Project>

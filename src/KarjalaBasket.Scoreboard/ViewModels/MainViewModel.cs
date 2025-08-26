@@ -4,16 +4,23 @@ using KarjalaBasket.Scoreboard.Constants;
 using KarjalaBasket.Scoreboard.Models;
 using KarjalaBasket.Scoreboard.Services;
 using KarjalaBasket.Scoreboard.Settings;
+using Plugin.Maui.Audio;
 
 namespace KarjalaBasket.Scoreboard.ViewModels;
 
-public class MainViewModel : INotifyPropertyChanged
+public class MainViewModel : INotifyPropertyChanged, IDisposable
 {
-    private readonly IDispatcherTimer _timer;
     private readonly GameService _gameService;
     private readonly TimeService _timeService;
+    
+    private readonly IDispatcherTimer _timer;
+    private readonly AsyncAudioPlayer _mainSignalAudioPlayer;
+    
     private readonly GameModel _game;
 
+    private readonly Action _onPeriodTimeIsUp;
+    private readonly Action _onPossessionTimeIsUp;
+    
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public bool CanEdit => !_timer.IsRunning;
@@ -68,11 +75,22 @@ public class MainViewModel : INotifyPropertyChanged
     
     public Command GoToNextPeriodCommand { get; set; }
     
+    public Command MakeSignalCommand { get; set; }
+    
     public MainViewModel()
     {
         _gameService = new GameService();
         _timeService = new TimeService();
+        
+        var audioService = new AudioService();
+        
         _timer = Application.Current!.Dispatcher.CreateTimer();
+        
+        _mainSignalAudioPlayer = audioService
+            .CreatePlayerAsync("signal_main.mp3")
+            .ConfigureAwait(false)
+            .GetAwaiter()
+            .GetResult();
         
         _game = _gameService.CreateGame(GameKinds.FibaStandart);
         
@@ -85,13 +103,18 @@ public class MainViewModel : INotifyPropertyChanged
 
         GoToNextPeriodCommand = new Command(() => _gameService.NextPeriod(_game));
 
+        MakeSignalCommand = new Command(MakeMainSignalAsync);
+
         _game.PropertyChanged += OnGameChanged;
+
+        _onPeriodTimeIsUp += () => StartStopTimer(false);
+        _onPeriodTimeIsUp += MakeMainSignalAsync;
         
-        _timeService.PeriodTimeIsUp += (_, _) => StartStopTimer(false);
+        _onPossessionTimeIsUp += MakeMainSignalAsync;
         
         _timer.Interval = _game.Settings.TimerTick;
-        _timer.Tick += (_, _) => _timeService.HandleTickForPeriodTime(_game);
-        _timer.Tick += (_, _) => _timeService.HandleTickForPossessionTime(_game);
+        _timer.Tick += (_, _) => _timeService.HandleTickForPeriodTime(_game, _onPeriodTimeIsUp);
+        _timer.Tick += (_, _) => _timeService.HandleTickForPossessionTime(_game, _onPossessionTimeIsUp);
         
         _gameService.NextPeriod(_game);
     }
@@ -115,7 +138,7 @@ public class MainViewModel : INotifyPropertyChanged
         return true;
 
     }
-
+    
     private void StartStopTimer(bool? start = null)
     {
         if ((start.HasValue && !start.Value) || _timer.IsRunning)
@@ -148,5 +171,14 @@ public class MainViewModel : INotifyPropertyChanged
                 OnPropertyChanged(nameof(Period));
                 break;
         }
+    }
+    
+    private async void MakeMainSignalAsync() => 
+        await _mainSignalAudioPlayer.PlayAsync(CancellationToken.None).ConfigureAwait(false);
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        _mainSignalAudioPlayer.Dispose();
     }
 }

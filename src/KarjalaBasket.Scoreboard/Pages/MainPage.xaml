@@ -262,7 +262,17 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
-                <ImageButton Grid.Column="4" 
+                <ImageButton Grid.Column="2" 
+                             ToolTipProperties.Text="Подать сигнал"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Command="{Binding MakeSignalCommand}"
+                             Source="speaker.png"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             Aspect="AspectFit"/>
+                
+                <ImageButton Grid.Column="3" 
                              ToolTipProperties.Text="Перейти в следующий период"
                              HorizontalOptions="Center"
                              VerticalOptions="Center"
