@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using KarjalaBasket.Scoreboard.Models;
@@ -9,31 +8,34 @@ namespace KarjalaBasket.Scoreboard.ViewModels;
 
 public class TeamViewModel : INotifyPropertyChanged
 {
-    private readonly TeamModel _team;
     private readonly TeamService _teamService;
+    
+    public TeamModel Team { get; }
 
+    public bool HasNextPossession => Team.HasNextPossession;
+    
     public ushort Points
     {
-        get => _team.Points; 
-        set => _teamService.ChangePoints(_team, value);
+        get => Team.Points; 
+        set => _teamService.ChangePoints(Team, value);
     }
 
     public byte Timeouts 
     {
-        get => _team.Timeouts; 
-        set => _teamService.ChangeTimeouts(_team, value);
+        get => Team.Timeouts; 
+        set => _teamService.ChangeTimeouts(Team, value);
     }
 
     public byte Fouls 
     {
-        get => _team.Fouls; 
-        set => _teamService.ChangeFouls(_team, value);
+        get => Team.Fouls; 
+        set => _teamService.ChangeFouls(Team, value);
     }
 
     public string Name 
     {
-        get => _team.Name; 
-        set => _teamService.ChangeName(_team, value);
+        get => Team.Name; 
+        set => _teamService.ChangeName(Team, value);
     }
     
     public ObservableCollection<PlayerViewModel> Players { get; }
@@ -46,19 +48,19 @@ public class TeamViewModel : INotifyPropertyChanged
         
         _teamService = new TeamService();
         
-        _team = team;
+        Team = team;
 
-        _team.PropertyChanged += OnTeamChanged;
+        Team.PropertyChanged += OnTeamChanged;
             
-        Watch(_team.Players, Players);
+        Watch(Team.Players, Players);
         
         AddPlayerCommand = new Command
         (
-            () => _teamService.AddPlayer(_team), 
-            () => _team.Players.Count <= _team.GameSettings.MaxPlayersInTeam
+            () => _teamService.AddPlayer(Team), 
+            () => Team.Players.Count <= Team.GameSettings.MaxPlayersInTeam
         );
         
-        _team.Players.CollectionChanged += (_, _) => AddPlayerCommand.ChangeCanExecute();
+        Team.Players.CollectionChanged += (_, _) => AddPlayerCommand.ChangeCanExecute();
     }
     
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -111,6 +113,9 @@ public class TeamViewModel : INotifyPropertyChanged
                 break;
             case nameof(TeamModel.Timeouts):
                 OnPropertyChanged(nameof(Timeouts));
+                break;
+            case nameof(TeamModel.HasNextPossession):
+                OnPropertyChanged(nameof(HasNextPossession));
                 break;
         }
     }

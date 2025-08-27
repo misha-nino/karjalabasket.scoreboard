@@ -77,6 +77,8 @@ public class MainViewModel : INotifyPropertyChanged, IDisposable
     
     public Command MakeSignalCommand { get; set; }
     
+    public Command<TeamViewModel> UpdatePossessionCommand { get; set; }
+    
     public MainViewModel()
     {
         _gameService = new GameService();
@@ -99,11 +101,15 @@ public class MainViewModel : INotifyPropertyChanged, IDisposable
 
         PlayCommand = new Command(() => StartStopTimer());
         
-        UpdatePossessionTimeCommand = new Command<int?>(s => _timeService.ChangePossessionTime(_game, s));
+        UpdatePossessionTimeCommand = 
+            new Command<int?>(s => _timeService.ChangePossessionTime(_game, s));
 
         GoToNextPeriodCommand = new Command(() => _gameService.NextPeriod(_game));
 
         MakeSignalCommand = new Command(MakeMainSignalAsync);
+        
+        UpdatePossessionCommand = 
+            new Command<TeamViewModel>(t => _gameService.ChangeNextPossession(_game, t.Team));
 
         _game.PropertyChanged += OnGameChanged;
 

@@ -55,7 +55,7 @@
                 <RowDefinition Height="Auto"/> <!--Основное время-->
                 <RowDefinition Height="Auto"/> <!--Время владения-->
                 <RowDefinition Height="Auto"/> <!--Старт/стоп--> 
-                <RowDefinition Height="Auto"/> <!--Доп функции--> 
+                <RowDefinition Height="*"/> <!--Доп функции--> 
             </Grid.RowDefinitions>
             
             <Entry Grid.Row="0" Grid.Column="0" FontSize="50" 
@@ -65,6 +65,13 @@
                    HorizontalOptions="Center"
                    MinimumWidthRequest="110"
                    Text="{Binding TeamA.Points, Mode=TwoWay}" />
+            
+            <ImageButton Grid.Row="0" Grid.Column="1"
+                         ToolTipProperties.Text="Старт/Стоп"
+                         Command="{Binding PlayCommand}"
+                         Source="{Binding PlayImageButtonSource}"
+                         WidthRequest="50"
+                         HeightRequest="50"/>
             
             <Entry Grid.Row="0" Grid.Column="2" 
                    ToolTipProperties.Text="Очки команды справа"
@@ -82,7 +89,30 @@
                            Label="Фолы"
                            Value="{Binding TeamA.Fouls, Mode=TwoWay}"/>
             
-            <v:StepperView Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" 
+            <FlexLayout Grid.Row="1" Grid.Column="1" 
+                        Direction="Row" 
+                        JustifyContent="SpaceAround"  
+                        AlignItems="Center">
+                <ImageButton ToolTipProperties.Text="Владение команды слева" 
+                             StyleClass="PossessionArrow"
+                             Source="arrow_left.png"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             Command="{Binding UpdatePossessionCommand}"
+                             CommandParameter="{Binding TeamA}"
+                             IsEnabled="{Binding TeamA.HasNextPossession}"/>
+                
+                <ImageButton ToolTipProperties.Text="Владение команды справа" 
+                             StyleClass="PossessionArrow"
+                             Source="arrow_right.png"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             Command="{Binding UpdatePossessionCommand}"
+                             CommandParameter="{Binding TeamB}"
+                             IsEnabled="{Binding TeamB.HasNextPossession}"/>
+            </FlexLayout>
+            
+            <v:StepperView Grid.Row="2" Grid.Column="1"
                            HorizontalOptions="Fill"
                            FontSize="30"
                            Label="Период"
@@ -110,7 +140,7 @@
                            Label="Таймауты"
                            Value="{Binding TeamB.Timeouts, Mode=TwoWay}"/>
             
-            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" ColumnSpacing="5" RowSpacing="10">
+            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" ColumnSpacing="5" RowSpacing="15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -157,7 +187,7 @@
                                  IsEnabled="{Binding CanEdit, Mode=TwoWay}"/>
             </Grid>
             
-            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" RowSpacing="10">
+            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" RowSpacing="15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -227,7 +257,7 @@
                              CommandParameter="{x:Null}"/>
             </Grid>
             
-            <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="End">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -238,30 +268,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
-                <ImageButton Grid.Column="2"
-                             ToolTipProperties.Text="Старт/Стоп"
-                             HorizontalOptions="Center"
-                             VerticalOptions="Center"
-                             Command="{Binding PlayCommand}"
-                             Source="{Binding PlayImageButtonSource}"
-                             WidthRequest="60"
-                             HeightRequest="60"
-                             Aspect="AspectFit"/>
-            </Grid>
-            
-            <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                
+
                 <ImageButton Grid.Column="2" 
                              ToolTipProperties.Text="Подать сигнал"
                              HorizontalOptions="Center"

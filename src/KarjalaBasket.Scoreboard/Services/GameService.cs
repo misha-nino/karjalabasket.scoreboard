@@ -36,6 +36,12 @@ internal class GameService
         game.PossessionTime = game.Settings.PossessionTime;
     }
 
+    public void ChangeNextPossession(GameModel game, TeamModel nextTeam)
+    {
+        game.TeamA.HasNextPossession = !game.TeamA.Equals(nextTeam);
+        game.TeamB.HasNextPossession = !game.TeamB.Equals(nextTeam);
+    }
+
     public void ChangePeriod(GameModel game, byte period) => game.Period = period;
 
     private static void NextExtraPeriod(GameModel game)

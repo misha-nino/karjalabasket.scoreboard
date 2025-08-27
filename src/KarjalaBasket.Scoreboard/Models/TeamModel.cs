@@ -11,7 +11,7 @@ public class TeamModel : INotifyPropertyChanged
     private ushort _points;
     private byte _timeouts;
     private byte _fouls;
-    private bool _hasNextPossession;
+    private bool _hasNextPossession = true;
     
     public GameSettings GameSettings { get; }
 
